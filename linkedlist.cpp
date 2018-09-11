@@ -13,7 +13,7 @@ typedef struct _lista { //LIST
 }list; 
 
 //INSERT BACK
-void inserir(list *List,char data){
+void insert(list *List,char data){
     //INSERT FIRST ELEMENT
     if(List->begin == NULL){
         List->begin = new node;
@@ -33,7 +33,7 @@ void inserir(list *List,char data){
 
 }
 //REMOVE FRONT
-void remover(list *List){
+void remove(list *List){
     if(List->begin){
         node *tmp = List->begin->prox;
         delete List->begin;
@@ -43,7 +43,7 @@ void remover(list *List){
     }
 }
 //SHOW ELEMENTS OF LIST
-void ver(list *List){ 
+void showElements(list *List){ 
     list *temp = List;
     while(temp->begin != NULL){
         cout << temp->begin->data <<endl;
@@ -51,17 +51,41 @@ void ver(list *List){
     }
 }
 
+//MERGE TWO LISTS BY THE BEGIN(HEADS)
+_node* mergeLists(_node *headA, _node* headB)
+{
+    _node *result = NULL;
+    _node **ptr = &result;
+    while( headA || headB  ) {
+        _node *temp = new _node;
+        temp->prox = NULL;
+        *ptr = temp;
+        ptr = &temp->prox;
+        if( headB == NULL || ( headA && headA->data < headB->data ) ) {
+            temp->data = headA->data;
+            headA = headA->prox;
+        } else {
+            temp->data = headB->data;
+            headB = headB->prox;
+        }
+    }
+    return result;
+}
+
 int main (){
     list *minhaLista = new list; //CREATE A NEW LIST
-    inserir(minhaLista,'A');
-    inserir(minhaLista,'B');
-    remover(minhaLista);
-    remover(minhaLista);
-    inserir(minhaLista,'C');
-    inserir(minhaLista,'D');
-    inserir(minhaLista,'E');
-    remover(minhaLista);
-    inserir(minhaLista,'F');
-    ver(minhaLista);
+    list *segundaLista = new list;
+    list *listaFinal = new list; 
+    insert(minhaLista,'A');
+    insert(minhaLista,'B');
+    //remove(minhaLista);
+    //remove(minhaLista);
+    insert(segundaLista,'C');
+    insert(segundaLista,'D');
+    //insert(minhaLista,'E');
+    //remove(minhaLista);
+    //insert(minhaLista,'F');
+    listaFinal->begin = mergeLists(minhaLista->begin,segundaLista->begin);
+    showElements(listaFinal);
     return 0;
 }
